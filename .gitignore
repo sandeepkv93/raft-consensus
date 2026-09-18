@@ -1,0 +1,29 @@
+# Binaries
+bin/
+*.exe
+*.out
+
+# Build artifacts
+dist/
+
+# Test output
+coverage.out
+coverage.html
+*.test
+
+# Data directories
+data/
+raft-data/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Agent cache
+.agent-cache/
