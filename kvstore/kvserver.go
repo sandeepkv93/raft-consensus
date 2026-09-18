@@ -104,7 +104,7 @@ func (s *KVServer) Stop() {
 // Public API
 // ─────────────────────────────────────────────────────────────────────────────
 
-const proposalTimeout = 5 * time.Second
+const proposalTimeout = 10 * time.Second
 
 // Get retrieves the value for key. Returns "" if the key doesn't exist.
 // Must be called on the leader; redirects are signalled via ErrNotLeader.

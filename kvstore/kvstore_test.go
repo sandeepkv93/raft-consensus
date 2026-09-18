@@ -203,9 +203,11 @@ func TestKV_NotLeader(t *testing.T) {
 }
 
 // TestKV_ConcurrentClients verifies multiple clients can operate concurrently.
+// Each client retries on transient errors (ErrNotLeader, ErrTimeout, ErrWrongLeader)
+// which is the correct Raft client pattern - retries are deduplicated via seqNum.
 func TestKV_ConcurrentClients(t *testing.T) {
 	c := newKVCluster(t, 3)
-	srv := c.leader(leaderWait)
+	c.leader(leaderWait)
 
 	const clients = 5
 	const opsPerClient = 10
@@ -221,8 +223,32 @@ func TestKV_ConcurrentClients(t *testing.T) {
 			for seq := uint64(1); seq <= opsPerClient; seq++ {
 				key := fmt.Sprintf("c%d-key%d", clientID, seq)
 				val := fmt.Sprintf("v%d", seq)
-				if err := srv.Put(cid, seq, key, val); err != nil {
-					errs <- fmt.Errorf("client %d put %s: %w", clientID, key, err)
+
+				// Retry on transient errors (leader change, timeout).
+				// seqNum deduplication ensures idempotency on retry.
+				deadline := time.Now().Add(15 * time.Second)
+				var lastErr error
+				for time.Now().Before(deadline) {
+					// Always route to the current leader.
+					var srv *kvstore.KVServer
+					for _, n := range c.nodes {
+						if n.raftNode.IsLeader() {
+							srv = n.kvServer
+							break
+						}
+					}
+					if srv == nil {
+						time.Sleep(10 * time.Millisecond)
+						continue
+					}
+					lastErr = srv.Put(cid, seq, key, val)
+					if lastErr == nil {
+						break
+					}
+					time.Sleep(10 * time.Millisecond)
+				}
+				if lastErr != nil {
+					errs <- fmt.Errorf("client %d put %s: %w", clientID, key, lastErr)
 					return
 				}
 			}

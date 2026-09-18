@@ -114,7 +114,7 @@ flowchart TD
 
 ### 1. Leader Election
 
-Every node starts as a **Follower**. If a follower doesn't hear from a leader within its randomised election timeout (150–300 ms), it becomes a **Candidate** and requests votes. A candidate that receives votes from a majority becomes **Leader**.
+Every node starts as a **Follower**. If a follower doesn't hear from a leader within its randomised election timeout (150-300 ms), it becomes a **Candidate** and requests votes. A candidate that receives votes from a majority becomes **Leader**.
 
 ```mermaid
 stateDiagram-v2
@@ -256,7 +256,7 @@ sequenceDiagram
     participant L as Leader
     participant LF as Lagging Follower
 
-    Note over LF: Missed entries 1–40\n(leader already compacted them)
+    Note over LF: Missed entries 1-40\n(leader already compacted them)
 
     L->>LF: InstallSnapshot {\n  lastIncludedIndex: 40,\n  lastIncludedTerm: 2,\n  data: <state machine bytes>\n}
 
@@ -444,14 +444,14 @@ cfg := raft.Config{
 
 ```
 broadcastTime  <<  electionTimeout  <<  MTBF
-    ~1ms               150–300ms       hours/days
+    ~1ms               150-300ms       hours/days
 ```
 
 | Parameter | Development | Production |
 |---|---|---|
-| `HeartbeatInterval` | 15 ms | 50–150 ms |
-| `ElectionTimeoutMin` | 50 ms | 150–500 ms |
-| `ElectionTimeoutMax` | 100 ms | 300–1000 ms |
+| `HeartbeatInterval` | 15 ms | 50-150 ms |
+| `ElectionTimeoutMin` | 50 ms | 150-500 ms |
+| `ElectionTimeoutMax` | 100 ms | 300-1000 ms |
 
 ---
 
