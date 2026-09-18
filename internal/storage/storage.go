@@ -1,8 +1,8 @@
 // Package storage provides concrete Storage implementations for Raft nodes.
 // Two implementations are provided:
 //
-//  1. MemoryStorage — in-memory, non-durable. For tests and single-process use.
-//  2. FileStorage   — durable, file-backed. Suitable for real deployments.
+//  1. MemoryStorage - in-memory, non-durable. For tests and single-process use.
+//  2. FileStorage   - durable, file-backed. Suitable for real deployments.
 package storage
 
 import (
@@ -104,8 +104,8 @@ const (
 //
 // Directory structure under dir/:
 //
-//	raft-state.json    — PersistentState (term, vote, log)
-//	raft-snapshot.json — Latest snapshot (if any)
+//	raft-state.json    - PersistentState (term, vote, log)
+//	raft-snapshot.json - Latest snapshot (if any)
 type FileStorage struct {
 	mu  sync.Mutex
 	dir string

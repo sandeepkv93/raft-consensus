@@ -66,7 +66,7 @@ func TestElection_TermMonotonicity(t *testing.T) {
 	}
 
 	if newLeaderTerm <= firstTerm {
-		// May not have re-elected yet — that's also valid as long as the test
+		// May not have re-elected yet - that's also valid as long as the test
 		// doesn't see two simultaneous leaders. Check that invariant.
 		if count := c.leaderCount(); count > 1 {
 			t.Fatalf("split brain: %d leaders simultaneously", count)
@@ -223,7 +223,7 @@ func TestFailure_NoQuorum(t *testing.T) {
 	healthyIdx, _ := c.propose(healthyCmd, 2*time.Second)
 	c.waitApplied(leaderIdx, healthyIdx, applyTimeout)
 
-	// Disconnect 2 followers — the leader is now isolated (no quorum).
+	// Disconnect 2 followers - the leader is now isolated (no quorum).
 	for i := range c.nodes {
 		if i != leaderIdx {
 			c.disconnect(i)
@@ -259,7 +259,7 @@ func TestFailure_NoQuorum(t *testing.T) {
 //
 // Note: a node may transiently still think it is "leader" after a partition
 // (it hasn't received counter-evidence yet). The safety guarantee is NOT
-// "no node in the minority ever has state==Leader" — it is "no node in the
+// "no node in the minority ever has state==Leader" - it is "no node in the
 // minority can commit". We test the stronger property: zero entries applied
 // on the minority side while the partition is active.
 func TestPartition_SplitBrain(t *testing.T) {
@@ -267,8 +267,8 @@ func TestPartition_SplitBrain(t *testing.T) {
 	c.waitLeader(leaderTimeout)
 
 	// Partition:
-	// - Minority: nodes 0, 1 (2 nodes — cannot reach quorum of 3)
-	// - Majority: nodes 2, 3, 4 (3 nodes — can elect and commit)
+	// - Minority: nodes 0, 1 (2 nodes - cannot reach quorum of 3)
+	// - Majority: nodes 2, 3, 4 (3 nodes - can elect and commit)
 	minority := []int{0, 1}
 	majority := []int{2, 3, 4}
 
@@ -282,7 +282,7 @@ func TestPartition_SplitBrain(t *testing.T) {
 	// Allow time for the majority side to elect a leader and commit entries.
 	time.Sleep(500 * time.Millisecond)
 
-	// Propose to the majority — this must succeed.
+	// Propose to the majority - this must succeed.
 	cmd := []byte("majority-side-write")
 	majorityIdx, _ := c.propose(cmd, 3*time.Second)
 
@@ -292,7 +292,7 @@ func TestPartition_SplitBrain(t *testing.T) {
 	}
 
 	// KEY SAFETY CHECK: the minority must NOT have applied the majority's entry.
-	// If they had, it would mean they somehow committed without quorum — split brain.
+	// If they had, it would mean they somehow committed without quorum - split brain.
 	time.Sleep(200 * time.Millisecond)
 	for _, m := range minority {
 		c.nodes[m].mu.Lock()
@@ -385,7 +385,7 @@ func TestSnapshot_LaggingFollower(t *testing.T) {
 
 	// Reconnect the lagging follower.
 	c.reconnect(followerIdx)
-	t.Logf("Reconnected %s — expecting InstallSnapshot", c.nodes[followerIdx].id)
+	t.Logf("Reconnected %s - expecting InstallSnapshot", c.nodes[followerIdx].id)
 
 	// The follower should install the snapshot and catch up.
 	time.Sleep(500 * time.Millisecond)

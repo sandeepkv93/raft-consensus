@@ -2,7 +2,7 @@
 
 # raft-consensus
 
-**A complete Raft distributed consensus implementation in Go — built from scratch.**
+**A complete Raft distributed consensus implementation in Go - built from scratch.**
 
 Leader election · Log replication · Log compaction · Linearizable KV store
 
@@ -35,7 +35,7 @@ Leader election · Log replication · Log compaction · Linearizable KV store
 
 ## What is Raft?
 
-Raft is a distributed consensus algorithm designed to be **understandable**. It solves the fundamental problem of making a cluster of machines agree on a shared, ordered log of commands — even when some machines crash or become unreachable.
+Raft is a distributed consensus algorithm designed to be **understandable**. It solves the fundamental problem of making a cluster of machines agree on a shared, ordered log of commands - even when some machines crash or become unreachable.
 
 Every server that applies the same log in the same order reaches the same state, making the cluster behave like a single reliable machine despite individual failures.
 
@@ -88,15 +88,15 @@ The implementation is structured in three clean layers, each with a well-defined
 flowchart TD
     Client["Client\nGET / PUT / DELETE"]
 
-    subgraph app["Application Layer  —  kvstore/"]
+    subgraph app["Application Layer  -  kvstore/"]
         KV["KVServer\n• Linearizable reads/writes\n• Client deduplication\n  via (clientID, seqNum)\n• Snapshot / restore"]
     end
 
-    subgraph core["Consensus Core  —  internal/raft/"]
+    subgraph core["Consensus Core  -  internal/raft/"]
         Node["raft.Node\n• Leader election\n• Log replication\n• Commit index\n• Snapshotting"]
     end
 
-    subgraph infra["Infrastructure  —  internal/"]
+    subgraph infra["Infrastructure  -  internal/"]
         T["Transport interface\n────────────────\nInProcessTransport\n• Network partitions\n• Drop rates / delays"]
         S["Storage interface\n────────────────\nMemoryStorage  (tests)\nFileStorage    (prod)\n• Atomic write-rename"]
     end
@@ -159,7 +159,7 @@ sequenceDiagram
     Note over node0,node2: Reset election timers on valid heartbeat
 ```
 
-**Split-vote prevention:** Each node picks a random timeout in `[ElectionTimeoutMin, ElectionTimeoutMax]`. This ensures that in most elections, only one node times out first, avoiding ties. If a tie occurs, nodes increment their term and try again — the randomness ensures convergence.
+**Split-vote prevention:** Each node picks a random timeout in `[ElectionTimeoutMin, ElectionTimeoutMax]`. This ensures that in most elections, only one node times out first, avoiding ties. If a tie occurs, nodes increment their term and try again - the randomness ensures convergence.
 
 ---
 
@@ -310,8 +310,8 @@ flowchart TD
     execute["Execute operation\nUpdate state machine\nRecord lastSeq + result"]
 
     req --> check
-    check -->|"Yes — duplicate"| cached
-    check -->|"No — new op"| execute
+    check -->|"Yes - duplicate"| cached
+    check -->|"No - new op"| execute
 ```
 
 ---
@@ -324,7 +324,7 @@ raft-consensus/
 ├── internal/
 │   ├── raft/
 │   │   ├── types.go          # LogEntry, RPC structs, Config, ApplyMsg
-│   │   ├── node.go           # Core Raft node — election, replication, snapshots
+│   │   ├── node.go           # Core Raft node - election, replication, snapshots
 │   │   ├── cluster_test.go   # Reusable test cluster harness
 │   │   └── raft_test.go      # 13 integration tests
 │   │
@@ -368,7 +368,7 @@ go run ./cmd/kvserver
 
 ```
 ╔══════════════════════════════════════════════╗
-║   Raft Consensus — Live Demo (3-node KV)     ║
+║   Raft Consensus - Live Demo (3-node KV)     ║
 ╚══════════════════════════════════════════════╝
 
 ⏳ Waiting for leader election...
@@ -392,7 +392,7 @@ go run ./cmd/kvserver
   ❌ Disconnecting leader from cluster...
   ✅ New leader elected: gamma (term 3)
   📖 recovery-key = "cluster-recovered"
-  ♻️  Reconnected beta — now rejoins as follower (term 3)
+  ♻️  Reconnected beta - now rejoins as follower (term 3)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   Demo 3: Node Status
@@ -618,7 +618,7 @@ flowchart TD
 
 | Resource | Description |
 |---|---|
-| [Raft Paper](https://raft.github.io/raft.pdf) | Original paper — Ongaro & Ousterhout, 2014 |
+| [Raft Paper](https://raft.github.io/raft.pdf) | Original paper - Ongaro & Ousterhout, 2014 |
 | [Extended Raft](https://pdos.csail.mit.edu/6.824/papers/raft-extended.pdf) | Full version with membership changes and snapshots |
 | [Raft Visualization](https://raft.github.io/) | Interactive step-by-step animation |
 | [MIT 6.824](https://pdos.csail.mit.edu/6.824/) | Distributed Systems course (test structure inspiration) |
@@ -628,4 +628,4 @@ flowchart TD
 
 ## License
 
-MIT — see [LICENSE](LICENSE) for details.
+MIT - see [LICENSE](LICENSE) for details.

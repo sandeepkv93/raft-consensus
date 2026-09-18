@@ -196,7 +196,7 @@ func (c *cluster) propose(cmd []byte, timeout time.Duration) (uint64, uint64) {
 }
 
 // waitApplied polls until node i has applied index.
-// Uses the persistent per-node cache — never loses messages between calls.
+// Uses the persistent per-node cache - never loses messages between calls.
 func (c *cluster) waitApplied(nodeIdx int, index uint64, timeout time.Duration) raft.ApplyMsg {
 	c.t.Helper()
 	cn := c.nodes[nodeIdx]

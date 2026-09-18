@@ -27,7 +27,7 @@ func main() {
 	})))
 
 	fmt.Println("╔══════════════════════════════════════════════╗")
-	fmt.Println("║   Raft Consensus — Live Demo (3-node KV)     ║")
+	fmt.Println("║   Raft Consensus - Live Demo (3-node KV)     ║")
 	fmt.Println("╚══════════════════════════════════════════════╝")
 	fmt.Println()
 
@@ -185,7 +185,7 @@ func main() {
 		}
 	}
 	time.Sleep(200 * time.Millisecond)
-	fmt.Printf("  ♻️  Reconnected %s — now rejoins as follower (term %d)\n",
+	fmt.Printf("  ♻️  Reconnected %s - now rejoins as follower (term %d)\n",
 		leaderNode.id, leaderNode.raftNode.Term())
 	fmt.Println()
 

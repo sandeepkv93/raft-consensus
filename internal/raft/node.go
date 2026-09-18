@@ -346,7 +346,7 @@ func (n *Node) HandleAppendEntries(args *AppendEntriesArgs) *AppendEntriesReply 
 	if args.Term > n.currentTerm {
 		n.becomeFollower(args.Term, args.LeaderID)
 	} else {
-		// Same term heartbeat/replication — refresh our knowledge of the leader.
+		// Same term heartbeat/replication - refresh our knowledge of the leader.
 		n.leaderID = args.LeaderID
 		if n.state == Candidate {
 			n.becomeFollower(args.Term, args.LeaderID)
@@ -399,7 +399,7 @@ func (n *Node) HandleAppendEntries(args *AppendEntriesArgs) *AppendEntriesReply 
 				n.log = append(n.log, args.Entries[i:]...)
 				break
 			}
-			// Entry already exists and matches — skip (idempotent).
+			// Entry already exists and matches - skip (idempotent).
 		} else {
 			// Append remaining new entries.
 			n.log = append(n.log, args.Entries[i:]...)
@@ -811,7 +811,7 @@ func (n *Node) sendInstallSnapshot(peer string) {
 }
 
 // maybeAdvanceCommitIndex advances commitIndex when a majority has replicated
-// an entry from the current term (§5.4.2 — only commit current-term entries).
+// an entry from the current term (§5.4.2 - only commit current-term entries).
 func (n *Node) maybeAdvanceCommitIndex() {
 	for idx := n.lastLogIndex(); idx > n.commitIndex; idx-- {
 		si := n.logIndexToSlice(idx)
